@@ -34,9 +34,14 @@ app.use(cookieParser());
 
 const verifyToken = (req, res, next) => {
 
+    console.log("========== VERIFY TOKEN ==========");
+    console.log("Authorization:", req.headers.authorization);
+
     const authorization = req.headers.authorization;
 
     if (!authorization) {
+        console.log("❌ No Authorization Header");
+
         return res.status(401).send({
             success: false,
             message: "Unauthorized Access",
@@ -45,10 +50,15 @@ const verifyToken = (req, res, next) => {
 
     const token = authorization.split(" ")[1];
 
+    console.log("TOKEN:", token);
+
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
         (err, decoded) => {
+
+            console.log("VERIFY ERROR:", err);
+            console.log("DECODED:", decoded);
 
             if (err) {
                 return res.status(401).send({
@@ -58,12 +68,9 @@ const verifyToken = (req, res, next) => {
             }
 
             req.user = decoded;
-
             next();
-
         }
     );
-
 };
 
 /* ===========================
