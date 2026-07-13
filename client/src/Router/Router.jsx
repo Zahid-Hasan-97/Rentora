@@ -25,20 +25,20 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Home />,
                 loader: () =>
-                    fetch("http://localhost:5000/cars?limit=6"),
+                    fetch(`${import.meta.env.VITE_API_URL}/cars`),
             },
 
             {
                 path: "availableCars",
                 element: <AvailableCars />,
-                loader: () => fetch("http://localhost:5000/cars"),
+                loader: () => fetch(`${import.meta.env.VITE_API_URL}/cars`),
             },
 
             {
                 path: "cars/:id",
                 element: <CarDetails />,
                 loader: ({ params }) =>
-                    fetch(`http://localhost:5000/cars/${params.id}`),
+                    fetch(`${import.meta.env.VITE_API_URL}/cars/${params.id}`),
             },
 
             // ✅ Book Car Route
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
                     </PrivateRoute>
                 ),
                 loader: ({ params }) =>
-                    fetch(`http://localhost:5000/cars/${params.id}`),
+                    fetch(`${import.meta.env.VITE_API_URL}/cars/${params.id}`),
             },
 
             {

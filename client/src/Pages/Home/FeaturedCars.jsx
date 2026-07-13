@@ -73,7 +73,7 @@ const FeaturedCars = () => {
 
     useEffect(() => {
         // Safe fallback for API URL to prevent import.meta build errors in certain environments
-        const apiUrl = "http://localhost:5000";
+        const apiUrl = import.meta.env.VITE_API_URL;
 
         axios
             .get(`${apiUrl}/cars/featured`)
