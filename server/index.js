@@ -77,17 +77,21 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
+        console.log("🚀 Starting MongoDB Connection...");
+
         /* ===========================
            Connect MongoDB
         =========================== */
 
         await client.connect();
 
+        console.log("✅ MongoDB Connected!");
+
         await client.db("admin").command({
             ping: 1,
         });
 
-        console.log("✅ MongoDB Connected Successfully!");
+        console.log("✅ MongoDB Ping Success!");
 
         /* ===========================
            Collections
@@ -777,7 +781,7 @@ async function run() {
 
         console.log("Car Rental API Ready");
     } catch (error) {
-        console.log(error);
+        console.error("❌ MongoDB Error:", error);
     }
 }
 
