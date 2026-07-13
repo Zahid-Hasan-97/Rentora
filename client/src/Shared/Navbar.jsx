@@ -1,37 +1,81 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+// Path update kora hoyeche, local context structure onujayi adjust kora holo
+import AuthContext from '../../src/Context/AuthContext/AuthContext';
+import { LayoutDashboard, Car, CalendarClock, LogOut, LogIn, PlusCircle } from 'lucide-react';
 
 const Navbar = () => {
+    const { user, signOutUser } = useContext(AuthContext);
+
+    const handleSignOut = async () => {
+        try {
+            await signOutUser();
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    };
+
     return (
-        <div className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
-            <div className="px-4">
-                <div className="flex items-center justify-between">
-                    <div className="flex shrink-0">
-                        <a aria-current="page" className="flex items-center" href="/">
-                            <img className="h-7 w-auto" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt=""/>
-                                <p className="sr-only">Website Title</p>
-                        </a>
+        <nav className="fixed top-0 inset-x-0 z-50 px-4 py-4">
+            <div className="max-w-6xl mx-auto bg-[#0a0a0a]/90 backdrop-blur-xl border border-[#222] rounded-2xl flex items-center justify-between shadow-2xl">
+                {/* Logo */}
+                <Link to="/" className="flex items-center gap-2">
+                    <div className="h-20 flex items-center justify-center">
+                        <img
+                            src="https://i.postimg.cc/YCFt8SWr/RENTORA.png"
+                            alt="Rentora Logo"
+                            className="h-full w-auto object-contain"
+                        />
                     </div>
-                    <div className="hidden md:flex md:items-center md:justify-center md:gap-5">
-                        <a aria-current="page"
-                            className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                            href="#">Home</a>
-                        <a className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                            href="#">Available Cars</a>
-                        <a className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                            href="#">Add Car</a>
-                        <a className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                            href="#">My Cars</a>
-                        <a className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
-                            href="#">My Bookings</a>
-                    </div>
-                    <div className="flex items-center justify-end gap-3">
-                        <Link to='/register' className="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex">Sign Up</Link>
-                        <Link className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" href="/signin">Sign In</Link>
-                    </div>
+                </Link>
+
+                {/* Nav Links */}
+                <div className="hidden md:flex items-center gap-1">
+                    <Link to="/" className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">Home</Link>
+                    <Link to="/availableCars" className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors">Cars</Link>
+
+                    {user && (
+                        <>
+                            <Link to="/addCar" className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                                <PlusCircle className="w-4 h-4" /> Add
+                            </Link>
+                            <Link to="/myCars" className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                                <LayoutDashboard className="w-4 h-4" /> My Cars
+                            </Link>
+                            <Link to="/myBookings" className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                                <CalendarClock className="w-4 h-4" /> Bookings
+                            </Link>
+                        </>
+                    )}
+                </div>
+
+                {/* Auth */}
+                <div className="flex items-center gap-4">
+                    {user ? (
+                        <div className="flex items-center gap-3 bg-[#111] p-1.5 rounded-full border border-[#222]">
+                            <img
+                                src={user.photoURL || "https://i.pravatar.cc/150?u=user"}
+                                alt="Profile"
+                                className="w-8 h-8 rounded-full object-cover border border-[#333]"
+                            />
+                            <button
+                                onClick={handleSignOut}
+                                className="pr-3 text-gray-400 hover:text-white transition-colors"
+                            >
+                                <LogOut className="w-4 h-4" />
+                            </button>
+                        </div>
+                    ) : (
+                        <Link
+                            to="/signin"
+                            className="flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-sm font-bold hover:bg-gray-200 transition-all"
+                        >
+                            <LogIn className="w-4 h-4" /> Sign In
+                        </Link>
+                    )}
                 </div>
             </div>
-    </div>
+        </nav>
     );
 };
 

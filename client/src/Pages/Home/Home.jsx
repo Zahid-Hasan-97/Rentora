@@ -1,13 +1,34 @@
-import React from 'react';
-import Banner from './Banner';
-import RecentCars from './RecentCars';
+import Banner from "./Banner";
+import Brands from "./Brands";
+import Collections from "./Collections";
+import FeaturedCars from "./FeaturedCars";
+import RecentCars from "./RecentCars";
+import WhyChoose from "./WhyChoose";
+import Testimonials from "./Testimonials";
+import FAQ from "./FAQ";
+import CTA from "./CTA";
 
 const Home = () => {
     return (
-        <div>
-            <Banner></Banner>
-            <RecentCars></RecentCars>
-        </div>
+        <>
+            <Banner />
+
+            <Brands />
+
+            <FeaturedCars />
+
+            <Collections />
+
+            <RecentCars />
+
+            <WhyChoose />
+
+            <Testimonials />
+
+            <FAQ />
+
+            <CTA />
+        </>
     );
 };
 
