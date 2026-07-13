@@ -121,29 +121,26 @@ async function run() {
         =========================== */
 
         app.post("/jwt", (req, res) => {
-
             const user = req.body;
 
             const token = jwt.sign(
-                {
-                    email: user.email,
-                },
+                { email: user.email },
                 process.env.ACCESS_TOKEN_SECRET,
-                {
-                    expiresIn: "7d",
-                }
+                { expiresIn: "7d" }
             );
 
             res
                 .cookie("token", token, {
                     httpOnly: true,
-                    secure: false,
-                    sameSite: "strict",
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite:
+                        process.env.NODE_ENV === "production"
+                            ? "none"
+                            : "strict",
                 })
                 .send({
                     success: true,
                 });
-
         });
 
         app.post("/logout", (req, res) => {
