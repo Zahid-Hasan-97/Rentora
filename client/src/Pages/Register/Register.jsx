@@ -6,7 +6,7 @@ import { User, Mail, Image as ImageIcon, Lock, ArrowRight, Eye, EyeOff } from "l
 
 // Import paths adjusted for standard structure
 import axiosSecure from "../../API/axiosSecure";
-import AuthContext from "../../context/AuthContext/AuthContext";
+import AuthContext from "../../Context/AuthContext/AuthContext";
 
 const Register = () => {
     const { createUser } = useContext(AuthContext);
