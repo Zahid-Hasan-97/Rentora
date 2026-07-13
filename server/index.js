@@ -33,19 +33,23 @@ app.use(cookieParser());
 =========================== */
 
 const verifyToken = (req, res, next) => {
-    const token = req.cookies?.token;
 
-    if (!token) {
+    const authorization = req.headers.authorization;
+
+    if (!authorization) {
         return res.status(401).send({
             success: false,
             message: "Unauthorized Access",
         });
     }
 
+    const token = authorization.split(" ")[1];
+
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
         (err, decoded) => {
+
             if (err) {
                 return res.status(401).send({
                     success: false,
@@ -56,8 +60,10 @@ const verifyToken = (req, res, next) => {
             req.user = decoded;
 
             next();
+
         }
     );
+
 };
 
 /* ===========================
@@ -121,26 +127,24 @@ async function run() {
         =========================== */
 
         app.post("/jwt", (req, res) => {
+
             const user = req.body;
 
             const token = jwt.sign(
-                { email: user.email },
+                {
+                    email: user.email,
+                },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: "7d" }
+                {
+                    expiresIn: "7d",
+                }
             );
 
-            res
-                .cookie("token", token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite:
-                        process.env.NODE_ENV === "production"
-                            ? "none"
-                            : "strict",
-                })
-                .send({
-                    success: true,
-                });
+            res.send({
+                success: true,
+                token,
+            });
+
         });
 
         app.post("/logout", (req, res) => {
@@ -172,15 +176,19 @@ async function run() {
                 const limit = parseInt(req.query.limit);
 
                 // My Cars
+                // My Cars
                 if (email) {
-                    const token = req.cookies?.token;
 
-                    if (!token) {
+                    const authorization = req.headers.authorization;
+
+                    if (!authorization) {
                         return res.status(401).send({
                             success: false,
                             message: "Unauthorized Access",
                         });
                     }
+
+                    const token = authorization.split(" ")[1];
 
                     const decoded = jwt.verify(
                         token,

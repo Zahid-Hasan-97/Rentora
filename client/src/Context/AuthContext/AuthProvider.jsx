@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
 
     const signOutUser = async () => {
 
-        await axiosSecure.post("/logout");
+        localStorage.removeItem("access-token");
 
         return signOut(auth);
 
@@ -85,11 +85,14 @@ const AuthProvider = ({ children }) => {
 
                     try {
 
-                        await axiosSecure.post("/jwt", {
-
+                        const res = await axiosSecure.post("/jwt", {
                             email: currentUser.email,
-
                         });
+
+                        localStorage.setItem(
+                            "access-token",
+                            res.data.token
+                        );
 
                     } catch (error) {
 
