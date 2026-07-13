@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { User, Mail, Image as ImageIcon, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 
 // Import paths adjusted for standard structure
-import axiosSecure from "../../api/axiosSecure";
+import axiosSecure from "../../API/axiosSecure";
 import AuthContext from "../../context/AuthContext/AuthContext";
 
 const Register = () => {
